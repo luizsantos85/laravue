@@ -5313,7 +5313,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  computed: {
+    totalCategories: function totalCategories() {
+      return this.$store.state.categories.categoriesState.data.length;
+    }
+  }
+});
 
 /***/ }),
 
@@ -5328,27 +5334,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  data: function data() {
-    return {
-      categories: []
-    };
-  },
   created: function created() {
-    this.loadCategories();
+    this.$store.dispatch('loadCategories');
   },
-  methods: {
-    loadCategories: function loadCategories() {
-      var _this = this;
-
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/v1/categories').then(function (response) {
-        _this.categories = response;
-      })["catch"](function (error) {
-        console.log(error);
-      });
+  computed: {
+    categories: function categories() {
+      return this.$store.state.categories.categoriesState;
     }
   }
 });
@@ -5398,7 +5390,7 @@ var render = function render() {
         name: "admin.categories"
       }
     }
-  }, [_vm._v("Categorias")])], 1)]), _vm._v(" "), _c("router-view")], 1);
+  }, [_vm._v("Categorias (" + _vm._s(_vm.totalCategories) + ")")])], 1)]), _vm._v(" "), _c("router-view")], 1);
 };
 
 var staticRenderFns = [];
@@ -5428,7 +5420,7 @@ var render = function render() {
   }, [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.categories.data, function (category) {
     return _c("tr", {
       key: category.id
-    }, [_c("td", [_vm._v(" " + _vm._s(category.id) + " ")]), _vm._v(" "), _c("td", [_vm._v(" " + _vm._s(category.name) + " ")]), _vm._v(" "), _c("td", [_vm._v(" *** ")])]);
+    }, [_c("td", [_vm._v(_vm._s(category.id))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(category.name))]), _vm._v(" "), _vm._m(1, true)]);
   }), 0)])]);
 };
 
@@ -5441,6 +5433,13 @@ var staticRenderFns = [function () {
       width: "100"
     }
   }, [_vm._v("AÇÕES")])])]);
+}, function () {
+  var _vm = this,
+      _c = _vm._self._c;
+
+  return _c("td", [_c("button", {
+    staticClass: "btn btn-primary"
+  }, [_vm._v("Editar")]), _vm._v(" "), _c("button", [_vm._v("Excluir")])]);
 }];
 render._withStripped = true;
 
@@ -5597,9 +5596,26 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  state: {},
-  mutations: {},
-  actions: {},
+  state: {
+    categoriesState: {
+      data: []
+    }
+  },
+  mutations: {
+    LOAD_CATEGORIES: function LOAD_CATEGORIES(state, categories) {
+      state.categoriesState = categories;
+    }
+  },
+  actions: {
+    loadCategories: function loadCategories(context) {
+      axios.get("/api/v1/categories").then(function (response) {
+        console.log(response);
+        context.commit('LOAD_CATEGORIES', response);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    }
+  },
   getters: {}
 });
 
@@ -10894,7 +10910,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ndiv[data-v-714cdc24]{\n    color: #000;\n}\n\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ndiv[data-v-714cdc24] {\n    color: #000;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
